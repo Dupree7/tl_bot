@@ -95,18 +95,18 @@ clicking = True
 
 
 sleepTable = {
-    "1": 0.7,
+    "1": 0.1,
     "2": 1,
-    "3": 0.4,
-    "4": 0.5,
-    "5": 1,
-    "6": 0.7,
+    "3": 0.3,
+    "4": 0.3,
+    "5": 0.3,
+    "6": 0.3,
     "7": 0.3,
     "8": 0.5,
-    "9": 0.2,
-    "0": 0.2,
-    "-": 0.2,
-    "=": 0.2,
+    "9": 7,
+    "0": 0.5,
+    "-": 0.5,
+    "=": 0.5,
 }
 
 firstTargetX = 31
@@ -169,7 +169,7 @@ def useSpell(key):
     elif key == "12":
         key = "="
 
-    if key == "6" or key == "4":
+    if key == "1":
         human_like_hold(key)
     else:
         human_like_press(key)
@@ -187,8 +187,8 @@ def ocrSpells():
         gray = cv2.cvtColor(cv2.imread(imageName), cv2.COLOR_BGR2GRAY)
         text = pytesseract.image_to_string(gray)
         text = re.sub(r'[^a-zA-Z0-9]', '', text)
-        # if i == 2 and text == "ve":
-        #     text = ""
+        if i == 6 and text == "ind":
+            text = ""
         if len(text) > 1:
             spells[f"{i + 1}"] = False
         else:
@@ -268,14 +268,14 @@ def main():
         spellsStatus = ocrSpells()
         print(spellsStatus)
         
-        defSpell = defensiveLogic(spellsStatus, 8, 11)
+        defSpell = defensiveLogic(spellsStatus, 8, 12)
         spellsStatus[defSpell] = False
 
-        durationTime = random.uniform(3, 6)
+        durationTime = random.uniform(0.5, 2.3)
         startTime = time.time()
 
         while time.time() - startTime < durationTime:
-            actSpell = actionLogic(spellsStatus, 1, 7)
+            actSpell = actionLogic(spellsStatus, 1, 6)
             if actSpell == "-1":
                 break
             spellsStatus[actSpell] = False
